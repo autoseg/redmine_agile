@@ -1,0 +1,4 @@
+= prioritize
+
+- posição default = max(posição)+1
+- menor posição = maior prioridade
