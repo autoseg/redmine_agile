@@ -1,3 +1,5 @@
+require_dependency 'prioritize/issue_patch'
+
 Redmine::Plugin.register :prioritize do
   name 'Prioritize plugin'
   author 'Author name'

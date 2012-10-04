@@ -15,15 +15,16 @@ class IssueReorderTest < ActiveSupport::TestCase
     :enumerations,
     :issues
 
-  test 'the truth' do
+  test 'reorder issues' do
     3.times do
-      Issue.new(:project_id => 1,
-                :tracker_id => 1,
-                :author_id => 3,
-                :status_id => 1,
-                :priority => IssuePriority.all.first,
-                :subject => 'Issue',
-                :fixed_version => Version.first)
+      version = Version.where(:project_id => 1, :status => 'open').first
+      Issue.create!(:project_id => 1,
+                    :tracker_id => 1,
+                    :author_id => 3,
+                    :status_id => 1,
+                    :priority => IssuePriority.all.first,
+                    :subject => 'Issue',
+                    :fixed_version => version)
     end
 
     issue_source = Issue.first
