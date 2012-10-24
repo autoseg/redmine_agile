@@ -31,7 +31,7 @@ class IssueTest < ActiveSupport::TestCase
 
   test 'create a new issue on a version should have a order number(?!)' do
     lower_priority = Issue.lower_priority_in(@version)
-    assert_equal lower_priority.prioritization, @issue.prioritization
+    assert_equal lower_priority, @issue.prioritization
   end
 
   test 'move a issue to a version should add a order number(?!)' do
