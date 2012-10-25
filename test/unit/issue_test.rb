@@ -17,16 +17,18 @@ class IssueTest < ActiveSupport::TestCase
 
   setup do
     @version = Version.where(:project_id => 1, :status => 'open').first
-    @issue = Issue.create!(:project_id => 1,
-                           :tracker_id => 1,
-                           :author_id => 3,
-                           :status_id => 1,
-                           :subject => 'Issue',
-                           :fixed_version => @version)
+    2.times do
+      @issue = Issue.create!(:project_id => 1,
+                             :tracker_id => 1,
+                             :author_id => 3,
+                             :status_id => 1,
+                             :subject => 'Issue',
+                             :fixed_version => @version)
+    end
   end
 
   test 'return the lower priority by version' do
-    pending
+    assert_equal 2, Issue.lower_priority_in(@version)
   end
 
   test 'create a new issue on a version should have a order number(?!)' do

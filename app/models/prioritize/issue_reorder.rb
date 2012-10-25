@@ -1,26 +1,34 @@
 module Prioritize
   class IssueReorder
-    def self.reorder(issue_source, issue_target)
-      if issue_source.prioritization < issue_target.prioritization
-        issues = Issue.where([
-          "prioritization > ? and prioritization <= ? and fixed_version_id = ?",
-          issue_source.prioritization,
-          issue_target.prioritization,
-          issue_source.fixed_version
-        ])
+    class << self
+      def reorder(source, target)
+        if source.prioritization < target.prioritization
+          decrease_priority(source, target)
+        elsif source.prioritization > target.prioritization
+          increase_priority(source, target)
+        end
+      end
 
-        issues.update_all("prioritization = prioritization - 1")
-        issue_source.update_attribute(:prioritization, issue_target.prioritization)
-      elsif issue_source.prioritization > issue_target.prioritization
+      private
+
+      def increase_priority(source, target)
         issues = Issue.where([
-          "prioritization < ? and prioritization >= ? and fixed_version_id = ?",
-          issue_source.prioritization,
-          issue_target.prioritization,
-          issue_source.fixed_version
+          "prioritization < :source_priority and prioritization >= :target_priority and fixed_version_id = :version",
+          source_priority: source.prioritization, target_priority: target.prioritization, version: source.fixed_version
         ])
 
         issues.update_all("prioritization = prioritization + 1")
-        issue_source.update_attribute(:prioritization, issue_target.prioritization)
+        source.update_attribute(:prioritization, target.prioritization)
+      end
+
+      def decrease_priority(source, target)
+        issues = Issue.where([
+          "prioritization > :source_priority and prioritization <= :target_priority and fixed_version_id = :version",
+          source_priority: source.prioritization, target_priority: target.prioritization, version: source.fixed_version
+        ])
+
+        issues.update_all("prioritization = prioritization - 1")
+        source.update_attribute(:prioritization, target.prioritization)
       end
     end
   end
