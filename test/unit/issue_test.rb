@@ -16,11 +16,13 @@ class IssueTest < ActiveSupport::TestCase
     :issues
 
   setup do
-    @issue_without_version = Issue.create!(:project_id => 1,
-                                           :tracker_id => 1,
-                                           :author_id => 3,
-                                           :status_id => 1,
-                                           :subject => 'Issue')
+    2.times do
+      @issue_without_version = Issue.create!(:project_id => 1,
+                                             :tracker_id => 1,
+                                             :author_id => 3,
+                                             :status_id => 1,
+                                             :subject => 'Issue')
+    end
 
     @version = Version.where(:project_id => 1, :status => 'open').first
 

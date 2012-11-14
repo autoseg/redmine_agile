@@ -1,4 +1,6 @@
 require_dependency 'prioritize/issue_patch'
+require_dependency 'prioritize/query_patch'
+require_dependency 'prioritize/hooks'
 
 Redmine::Plugin.register :prioritize do
   name 'Prioritize plugin'
