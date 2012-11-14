@@ -1,6 +1,6 @@
 class AddPrioritizationToIssue < ActiveRecord::Migration
   def up
-    add_column :issues, :prioritization, :integer
+    add_column :issues, :prioritization, :integer, :default => 0
     add_index :issues, :prioritization
   end
 

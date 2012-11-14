@@ -16,7 +16,14 @@ class IssueTest < ActiveSupport::TestCase
     :issues
 
   setup do
+    @issue_without_version = Issue.create!(:project_id => 1,
+                                           :tracker_id => 1,
+                                           :author_id => 3,
+                                           :status_id => 1,
+                                           :subject => 'Issue')
+
     @version = Version.where(:project_id => 1, :status => 'open').first
+
     2.times do
       @issue = Issue.create!(:project_id => 1,
                              :tracker_id => 1,
@@ -27,20 +34,18 @@ class IssueTest < ActiveSupport::TestCase
     end
   end
 
-  test 'return the lower priority by version' do
+  test "return the lower priority by version" do
     assert_equal 2, Issue.lower_priority_in(@version)
   end
 
-  test 'create a new issue on a version should have a order number(?!)' do
+  test "new issues should receive the lower priority" do
     lower_priority = Issue.lower_priority_in(@version)
     assert_equal lower_priority, @issue.prioritization
   end
 
-  test 'move a issue to a version should add a order number(?!)' do
-    pending
-  end
-
-  test 'move out a issue from a version should clean order number(?!)' do
-    pending
+  test "issues moved to another version should receive the version's lower priority" do
+    lower_priority = Issue.lower_priority_in(nil)
+    @issue.update_attribute :fixed_version, nil
+    assert_equal lower_priority + 1, @issue.prioritization
   end
 end
