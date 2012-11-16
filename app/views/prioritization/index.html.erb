@@ -1,0 +1,39 @@
+<div class="box tabular">
+  <p>
+    <%= label_tag :fixed_version_id %>
+    <%= select_tag :fixed_version_id,
+      options_from_collection_for_select(@versions, :id, :name, params[:fixed_version_id]),
+      :prompt => 'Unversioned' %>
+  </p>
+</div>
+
+<ul id="issues_prioritizable">
+  <% @issues.each do |issue| %>
+    <li id=<%= dom_id(issue) %>><%= issue.id %> - <%= issue.subject %></li>
+  <% end %>
+</ul>
+
+<script>
+  $(function(){
+    $("#issues_prioritizable").sortable({
+      axis: 'y',
+      dropOnEmpty:false,
+      cursor: 'move',
+      placeholder: 'sortable-placeholder',
+      update: function(event, ui) {
+        var id_prev = ui.item.prev().attr('id').replace('issue_',''),
+        id_source = ui.item.attr('id').replace('issue_',''),
+        id_target = ui.item.prev().attr('id') ? id_prev : 0;
+
+        $.post('', { source: id_source, target: id_target });
+      }
+    });
+
+    $("#fixed_version_id").change(function(evt){
+      $.getJSON('', { fixed_version_id: $(this).val() }, function(data) {
+        console.log(data);
+      });
+    });
+
+  });
+</script>
