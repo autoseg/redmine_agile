@@ -29,23 +29,23 @@ class IssueReorderTest < ActiveSupport::TestCase
   end
 
   test 'decrease issue priority' do
-    source = Issue.where(:subject => "PrioritizationTest").first
-    target = Issue.where(:subject => "PrioritizationTest").last
+    source = Issue.where(:subject => "PrioritizationTest")[0]
+    target = Issue.where(:subject => "PrioritizationTest")[1]
 
     assert_equal 1, source.prioritization
-    assert_equal 3, target.prioritization
+    assert_equal 2, target.prioritization
 
     Prioritize::IssueReorder.reorder(source, target)
 
-    assert_equal 3, source.reload.prioritization
-    assert_equal 2, target.reload.prioritization
+    assert_equal 2, source.reload.prioritization
+    assert_equal 1, target.reload.prioritization
   end
 
   test 'increase issue priority' do
-    source = Issue.where(:subject => "PrioritizationTest").last
-    target = Issue.where(:subject => "PrioritizationTest").first
+    source = Issue.where(:subject => "PrioritizationTest")[1]
+    target = Issue.where(:subject => "PrioritizationTest")[0]
 
-    assert_equal 3, source.prioritization
+    assert_equal 2, source.prioritization
     assert_equal 1, target.prioritization
 
     Prioritize::IssueReorder.reorder(source, target)

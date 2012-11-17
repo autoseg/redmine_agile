@@ -2,11 +2,7 @@ require_dependency 'issue'
 
 module Prioritize::IssuePatch
   def lower_priority_in(version)
-    lower_priority_issue = select(:prioritization).
-      where(:fixed_version_id => version).
-      order(:prioritization).last
-
-    lower_priority_issue.present? ? ( lower_priority_issue.prioritization || 0 ) : 0
+    where(:fixed_version_id => version).maximum(:prioritization) || 0
   end
 
   def self.extended(base)

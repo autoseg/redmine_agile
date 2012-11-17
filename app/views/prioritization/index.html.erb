@@ -8,9 +8,7 @@
 </div>
 
 <ul id="issues_prioritizable">
-  <% @issues.each do |issue| %>
-    <li id=<%= dom_id(issue) %>><%= issue.id %> - <%= issue.subject %></li>
-  <% end %>
+  <%= render 'issues_list', :collection => @issues %>
 </ul>
 
 <script>
@@ -21,19 +19,30 @@
       cursor: 'move',
       placeholder: 'sortable-placeholder',
       update: function(event, ui) {
-        var id_prev = ui.item.prev().attr('id').replace('issue_',''),
-        id_source = ui.item.attr('id').replace('issue_',''),
-        id_target = ui.item.prev().attr('id') ? id_prev : 0;
+        var id_source = ui.item.attr('id').replace('issue_','');
 
-        $.post('', { source: id_source, target: id_target });
+        if(ui.item.prev().attr('id')) {
+          var id_prev = ui.item.prev().attr('id').replace('issue_',''),
+          id_target = ui.item.prev().attr('id') ? id_prev  : 0;
+        } else {
+          var id_next = ui.item.next().attr('id').replace('issue_',''),
+          id_target = ui.item.next().attr('id') ? id_next : 0;
+        }
+
+        id_moved = ui.item.attr('id').replace('issue_','');
+        id_before = ui.item.prev().attr('id') ? ui.item.prev().attr('id').replace('issue_','') : 0;
+        id_after = ui.item.next().attr('id') ? ui.item.next().attr('id').replace('issue_','') : 0;
+
+        console.log("moved: " + id_moved)
+        console.log("before: " + id_before)
+        console.log("after: " + id_after)
+
+        $.post('', { _method: 'put', source: id_source, target: id_target });
       }
     });
 
     $("#fixed_version_id").change(function(evt){
-      $.getJSON('', { fixed_version_id: $(this).val() }, function(data) {
-        console.log(data);
-      });
+      $.getScript('', { fixed_version_id: $(this).val() });
     });
-
   });
 </script>

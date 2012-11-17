@@ -4,7 +4,7 @@ resources :projects do
       :to => "prioritization#index",
       :as => :prioritizations
 
-    post :prioritization,
+    put :prioritization,
       :to => "prioritization#update",
       :as => :update_prioritizations
   end
