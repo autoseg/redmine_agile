@@ -1,4 +1,6 @@
 class PrioritizationController < ApplicationController
+  helper :issues
+
   def index
     @project = Project.find(params[:id])
     @versions = @project.versions.where(:status => 'open')

@@ -7,42 +7,11 @@
   </p>
 </div>
 
-<ul id="issues_prioritizable">
+<ul id="issues-prioritizable" class="prioritize-list">
   <%= render 'issues_list', :collection => @issues %>
 </ul>
 
-<script>
-  $(function(){
-    $("#issues_prioritizable").sortable({
-      axis: 'y',
-      dropOnEmpty:false,
-      cursor: 'move',
-      placeholder: 'sortable-placeholder',
-      update: function(event, ui) {
-        var id_source = ui.item.attr('id').replace('issue_','');
-
-        if(ui.item.prev().attr('id')) {
-          var id_prev = ui.item.prev().attr('id').replace('issue_',''),
-          id_target = ui.item.prev().attr('id') ? id_prev  : 0;
-        } else {
-          var id_next = ui.item.next().attr('id').replace('issue_',''),
-          id_target = ui.item.next().attr('id') ? id_next : 0;
-        }
-
-        id_moved = ui.item.attr('id').replace('issue_','');
-        id_before = ui.item.prev().attr('id') ? ui.item.prev().attr('id').replace('issue_','') : 0;
-        id_after = ui.item.next().attr('id') ? ui.item.next().attr('id').replace('issue_','') : 0;
-
-        console.log("moved: " + id_moved)
-        console.log("before: " + id_before)
-        console.log("after: " + id_after)
-
-        $.post('', { _method: 'put', source: id_source, target: id_target });
-      }
-    });
-
-    $("#fixed_version_id").change(function(evt){
-      $.getScript('', { fixed_version_id: $(this).val() });
-    });
-  });
-</script>
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'prioritize', :plugin => 'prioritize' %>
+  <%= javascript_include_tag 'prioritize', :plugin => 'prioritize' %>
+<% end %>

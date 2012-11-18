@@ -1,3 +1,5 @@
 <% @issues.each do |issue| %>
-  <li id="<%= dom_id(issue) %>"> <%= "#{issue.id} - #{issue.subject}" %> </li>
+  <li id="<%= dom_id(issue) %>">
+    <%= render_issue_tooltip(issue) %>
+  </li>
 <% end %>
