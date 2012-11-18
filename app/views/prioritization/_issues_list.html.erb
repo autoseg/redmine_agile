@@ -1,5 +1,6 @@
 <% @issues.each do |issue| %>
   <li id="<%= dom_id(issue) %>">
-    <%= render_issue_tooltip(issue) %>
+    <%= avatar(issue.assigned_to || issue.author, :size => 24) %>
+    <%= link_to_issue(issue) %>
   </li>
 <% end %>
