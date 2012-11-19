@@ -16,6 +16,6 @@ Redmine::Plugin.register :prioritize do
   menu :project_menu,
        :prioritization,
        { :controller => :prioritization, :action => :index },
-       :caption => 'Prioritization',
+       :caption => 'Issue Prioritization',
        :after => :issues
 end
