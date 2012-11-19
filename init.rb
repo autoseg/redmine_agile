@@ -6,8 +6,8 @@ Redmine::Plugin.register :prioritize do
   author 'Kassio Borges & Brian Storti'
   description 'Plugin that give real order to issues'
   version '0.0.1'
-  url 'http://example.com/path/to/plugin'
-  author_url 'http://example.com/about'
+  url 'https://github.com/kassio/redmine-prioritize'
+  author_url 'https://github.com/kassio/redmine-prioritize#readme'
 
   permission :prioritization,
     { :prioritization => [:index, :update] },
