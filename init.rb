@@ -11,11 +11,15 @@ Redmine::Plugin.register :prioritize do
 
   permission :prioritization,
     { :prioritization => [:index, :update] },
-    :public => true
+    :require => :member
 
   menu :project_menu,
        :prioritization,
        { :controller => :prioritization, :action => :index },
-       :caption => 'Issue Prioritization',
-       :after => :issues
+       :caption => :issue_prioritization,
+       :after => :issues,
+       :if => Proc.new {
+         User.current.allowed_to? :edit_issues, nil, :global => true ||
+         User.current.admin?
+       }
 end

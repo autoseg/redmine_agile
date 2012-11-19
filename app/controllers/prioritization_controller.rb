@@ -1,6 +1,8 @@
 class PrioritizationController < ApplicationController
   helper :issues
 
+  before_filter :authorize
+
   def index
     @project = Project.find(params[:id])
     @versions = @project.versions.where(:status => 'open')
@@ -26,6 +28,14 @@ class PrioritizationController < ApplicationController
   end
 
   private
+
+  def authorize
+    deny_access unless can_edit_issue?
+  end
+
+  def can_edit_issue?
+    User.current.allowed_to? :edit_issues, nil, :global => true || User.current.admin?
+  end
 
   def fixed_version_id
     return if params[:fixed_version_id].blank?
