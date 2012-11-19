@@ -27,8 +27,14 @@ $(function(){
       }
    });
 
-   $("#fixed_version_id").change(function(evt){
-      $.get('', { fixed_version_id: $(this).val(), format: 'js' });
+   $("#fixed_version_id, #closed_issues").change(function(evt){
+      var data = {
+         fixed_version_id: $('#fixed_version_id').val(),
+         closed_issues: $('#closed_issues:checked').val(),
+         format: 'js'
+      };
+
+      $.get('', data);
    });
 });
 

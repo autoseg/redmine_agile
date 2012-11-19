@@ -7,6 +7,10 @@
       options_from_collection_for_select(@versions, :id, :name, params[:fixed_version_id]),
       :prompt => t('unversioned') %>
   </p>
+  <p>
+    <%= label_tag :closed_issues %>
+    <%= check_box_tag :closed_issues, true, false %>
+  </p>
 </div>
 
 <ul id="issues-prioritizable" class="prioritize-list">
