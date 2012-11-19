@@ -1,6 +1,13 @@
 <% @issues.each do |issue| %>
   <li id="<%= dom_id(issue) %>">
-    <%= avatar(issue.assigned_to || issue.author, :size => 24) %>
-    <%= link_to_issue(issue) %>
+    <span class="issue-prioritization">
+      <%= issue.prioritization %>
+    </span>
+    <span class="issue-avatar">
+      <%= avatar(issue.assigned_to || issue.author, :size => 24) %>
+    </span>
+    <span class="link-to-issue">
+      <%= link_to_issue(issue) %>
+    </span>
   </li>
 <% end %>

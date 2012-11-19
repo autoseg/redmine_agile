@@ -5,17 +5,25 @@ $(function(){
       cursor: 'move',
       placeholder: 'sortable-placeholder',
       update: function(event, ui) {
-         var id_source = ui.item.attr('id').replace('issue_','');
+         var source_id = ui.item.attr('id').replace('issue_','');
 
-         if(ui.item.prev().attr('id')) {
-            var id_prev = ui.item.prev().attr('id').replace('issue_',''),
-            id_target = ui.item.prev().attr('id') ? id_prev  : 0;
+         if(ui.position.top < ui.originalPosition.top) {
+            var next_element_id = ui.item.next().attr('id'),
+            target_id = next_element_id ? next_element_id.replace('issue_','') : 0;
          } else {
-            var id_next = ui.item.next().attr('id').replace('issue_',''),
-            id_target = ui.item.next().attr('id') ? id_next : 0;
+            var prev_element_id = ui.item.prev().attr('id'),
+            target_id = prev_element_id ? prev_element_id.replace('issue_','') : 0;
          }
 
-         $.post('', { _method: 'put', source: id_source, target: id_target });
+         $.post('', { _method: 'put', source_id: source_id, target_id: target_id }, function (data) {
+            $.each(data, function(index, element) {
+               var issue = element.issue,
+               item = "#issue_" + issue.id,
+               priority = issue.prioritization;
+
+               $(item + " .issue-prioritization").html(priority);
+            });
+         });
       }
    });
 
