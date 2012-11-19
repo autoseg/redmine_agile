@@ -1,9 +1,11 @@
+<% html_title t('issue_prioritization') %>
+
 <div class="box tabular">
   <p>
     <%= label_tag :fixed_version_id %>
     <%= select_tag :fixed_version_id,
       options_from_collection_for_select(@versions, :id, :name, params[:fixed_version_id]),
-      :prompt => 'Unversioned' %>
+      :prompt => t('unversioned') %>
   </p>
 </div>
 

@@ -1,6 +1,5 @@
 # English strings go here for Rails i18n
 en:
+  issue_prioritization: 'Issue Prioritization'
   field_prioritization: 'Issue Prioritization'
   unversioned: 'Unversioned'
-  permission_prioritize_view: 'View issue prioritization'
-  permission_prioritize_reorder: 'Update issue prioritization'
