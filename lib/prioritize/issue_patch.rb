@@ -1,8 +1,8 @@
 require_dependency 'issue'
 
 module Prioritize::IssuePatch
-  def lower_priority_in(version)
-    where(:fixed_version_id => version).maximum(:prioritization) || 0
+  def lower_priority_in(version, project)
+    where(:fixed_version_id => version, :project_id => project).maximum(:prioritization) || 0
   end
 
   def self.extended(base)
@@ -12,7 +12,7 @@ module Prioritize::IssuePatch
       before_update :update_prioritization
 
       def set_prioritization
-        lower_priority = self.class.lower_priority_in(self.fixed_version)
+        lower_priority = ::Issue.lower_priority_in(self.fixed_version, self.project)
         self.prioritization = lower_priority + 1
       end
 
