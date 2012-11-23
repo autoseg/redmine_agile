@@ -16,38 +16,34 @@ class IssueTest < ActiveSupport::TestCase
     :issues
 
   setup do
+    @project = Project.create!(:name => 'project', :identifier => 'p1')
+    @other_project = Project.create!(:name => 'project', :identifier => 'p2')
+
     2.times do
-      @issue_without_version = Issue.create!(:project_id => 1,
-                                             :tracker_id => 1,
-                                             :author_id => 3,
-                                             :status_id => 1,
-                                             :subject => 'Issue')
+      @issue_without_version = create_issue(:project => @project)
+      @other_project_issue = create_issue(:project => @other_project)
     end
 
-    @version = Version.where(:project_id => 1, :status => 'open').first
+    @version = Version.create!(:name => "version", :project => @project, :status => 'open', :sharing => 'tree')
 
     2.times do
-      @issue = Issue.create!(:project_id => 1,
-                             :tracker_id => 1,
-                             :author_id => 3,
-                             :status_id => 1,
-                             :subject => 'Issue',
-                             :fixed_version => @version)
+      @issue = create_issue(:project => @project, :fixed_version => @version)
     end
   end
 
   test "return the lower priority by version" do
-    assert_equal 2, Issue.lower_priority_in(@version)
+    assert_equal 2, Issue.lower_priority_in(@version, @project)
   end
 
   test "new issues should receive the lower priority" do
-    lower_priority = Issue.lower_priority_in(@version)
+    lower_priority = Issue.lower_priority_in(@version, @project)
     assert_equal lower_priority, @issue.prioritization
   end
 
   test "issues moved to another version should receive the version's lower priority" do
-    lower_priority = Issue.lower_priority_in(nil)
+    lower_priority = Issue.lower_priority_in(nil, @project)
     @issue.update_attribute :fixed_version, nil
+
     assert_equal lower_priority + 1, @issue.prioritization
   end
 end

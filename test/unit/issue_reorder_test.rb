@@ -16,36 +16,32 @@ class IssueReorderTest < ActiveSupport::TestCase
     :issues
 
   setup do
+    @project = Project.create!(:name => 'project', :identifier => 'p1')
+    @version = Version.create!(:name => "version", :project => @project, :status => 'open', :sharing => 'tree')
+
     3.times do
-      version = Version.where(:project_id => 1, :status => 'open').first
-      Issue.create!(:project_id => 1,
-                    :tracker_id => 1,
-                    :author_id => 3,
-                    :status_id => 1,
-                    :priority => IssuePriority.all.first,
-                    :subject => "PrioritizationTest",
-                    :fixed_version => version)
+      @issue = create_issue(:project => @project, :fixed_version => @version)
     end
   end
 
   test 'decrease issue priority' do
-    source = Issue.where(:subject => "PrioritizationTest")[0]
-    target = Issue.where(:subject => "PrioritizationTest")[1]
+    source = @project.issues.first
+    target = @project.issues.last
 
     assert_equal 1, source.prioritization
-    assert_equal 2, target.prioritization
+    assert_equal 3, target.prioritization
 
     Prioritize::IssueReorder.reorder(source, target)
 
-    assert_equal 2, source.reload.prioritization
-    assert_equal 1, target.reload.prioritization
+    assert_equal 3, source.reload.prioritization
+    assert_equal 2, target.reload.prioritization
   end
 
   test 'increase issue priority' do
-    source = Issue.where(:subject => "PrioritizationTest")[1]
-    target = Issue.where(:subject => "PrioritizationTest")[0]
+    source = @project.issues.last
+    target = @project.issues.first
 
-    assert_equal 2, source.prioritization
+    assert_equal 3, source.prioritization
     assert_equal 1, target.prioritization
 
     Prioritize::IssueReorder.reorder(source, target)
