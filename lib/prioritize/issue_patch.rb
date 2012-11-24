@@ -11,6 +11,13 @@ module Prioritize::IssuePatch
       before_create :set_prioritization
       before_update :update_prioritization
 
+      def set_prioritization!
+        set_prioritization
+        save!
+      end
+
+      private
+
       def set_prioritization
         lower_priority = ::Issue.lower_priority_in(self.fixed_version, self.project)
         self.prioritization = lower_priority + 1
