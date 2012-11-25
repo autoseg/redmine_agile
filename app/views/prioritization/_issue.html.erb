@@ -1,0 +1,8 @@
+<li id="<%= dom_id(issue) %>">
+  <span class="issue-avatar">
+    <%= avatar(issue.assigned_to || issue.author, :size => 24) %>
+  </span>
+  <span class="link-to-issue">
+    <%= link_to_issue(issue) %>
+  </span>
+</li>

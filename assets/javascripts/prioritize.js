@@ -15,15 +15,7 @@ $(function(){
             target_id = prev_element_id ? prev_element_id.replace('issue_','') : 0;
          }
 
-         $.post('', { _method: 'put', source_id: source_id, target_id: target_id }, function (data) {
-            $.each(data, function(index, element) {
-               var issue = element.issue,
-               item = "#issue_" + issue.id,
-               priority = issue.prioritization;
-
-               $(item + " .issue-prioritization").html(priority);
-            });
-         });
+         $.post('', { _method: 'put', source_id: source_id, target_id: target_id });
       }
    });
 

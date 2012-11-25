@@ -1,1 +1,1 @@
-$("#issues-prioritizable").html("<%=j render 'issues_list', :collection => @issues %>");
+$("#issues-prioritizable").html("<%=j render :partial => 'prioritization/issue', :collection => @issues %>");

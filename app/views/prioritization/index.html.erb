@@ -13,9 +13,9 @@
   </p>
 </div>
 
-<ul id="issues-prioritizable" class="prioritize-list">
-  <%= render 'issues_list', :collection => @issues %>
-</ul>
+<ol id="issues-prioritizable" class="prioritize-list">
+  <%= render :partial => 'prioritization/issue', :collection => @issues %>
+</ol>
 
 <% content_for :header_tags do %>
   <%= stylesheet_link_tag 'prioritize', :plugin => 'redmine_prioritize' %>
