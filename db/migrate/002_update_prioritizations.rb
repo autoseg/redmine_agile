@@ -1,7 +1,9 @@
 class UpdatePrioritizations < ActiveRecord::Migration
   def up
-    Issue.order(:updated_on).each do |issue|
-      issue.set_prioritization!
+    ActiveRecord::Base.transaction do
+      Issue.order(:updated_on).each do |issue|
+        issue.set_prioritization!
+      end
     end
   end
 
