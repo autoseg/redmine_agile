@@ -14,12 +14,11 @@ Redmine::Plugin.register :redmine_prioritize do
     :require => :member
 
   menu :project_menu,
-       :prioritization,
-       { :controller => :prioritization, :action => :index },
-       :caption => :issue_prioritization,
-       :after => :issues,
-       :if => Proc.new {
-         User.current.allowed_to? :edit_issues, nil, :global => true ||
-         User.current.admin?
-       }
+    :prioritization,
+    { :controller => :prioritization, :action => :index },
+    :caption => :issue_prioritization,
+    :after => :issues,
+    :if => Proc.new { |project|
+      User.current.allowed_to?(:edit_issues, project, :global => true)
+    }
 end
