@@ -3,22 +3,18 @@ require_dependency 'prioritize/query_patch'
 
 Redmine::Plugin.register :redmine_prioritize do
   name 'Prioritize plugin'
-  author 'Kassio Borges & Brian Storti'
+  author 'Kassio Borges'
   description 'Plugin that give real order to issues'
-  version '0.0.1'
-  url 'https://github.com/kassio/redmine_prioritize'
-  author_url 'https://github.com/kassio/redmine_prioritize#readme'
+  version '0.0.2'
+  url 'https://github.com/autoseg/redmine_prioritize'
+  author_url 'https://github.com/autoseg/redmine_prioritize#readme'
 
   permission :prioritization,
-    { :prioritization => [:index, :update] },
-    :require => :member
+    { :prioritization => [:index, :update] }
 
   menu :project_menu,
     :prioritization,
     { :controller => :prioritization, :action => :index },
     :caption => :issue_prioritization,
-    :after => :issues,
-    :if => Proc.new { |project|
-      User.current.allowed_to?(:edit_issues, project, :global => true)
-    }
+    :after => :issues
 end
